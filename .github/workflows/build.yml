@@ -1,0 +1,54 @@
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  statuses: write
+  checks: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+    
+    - name: Build
+      run: mvn --batch-mode -DskipTests package
+
+    - name: Test
+      run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
+
+    - name: Report
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Maven Tests
+        path: target/surefire-reports/*.xml
+        reporter: java-junit
+        fail-on-error: true
+    
+    # generates coverage-report.md and publishes as checkrun
+    - name: JaCoCo Code Coverage Report
+      id: jacoco_reporter
+      uses: PavanMudigonda/jacoco-reporter@v4.9
+      with:
+        coverage_results_path: target/site/jacoco/jacoco.xml
+        coverage_report_name: Coverage
+        coverage_report_title: JaCoCo
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        skip_check_run: false
+        minimum_coverage: 80
+        fail_below_threshold: false
+        publish_only_summary: false
+  
+    # Publish Coverage Job Summary  # Optional
+    - name: Add Coverage Job Summary
+      run: echo "${{ steps.jacoco_reporter.outputs.coverageSummary }}" >> $GITHUB_STEP_SUMMARY
