@@ -16,109 +16,177 @@ public class TravelArrayImpl implements Travel {
 	
 	private Double price;    // precio de entradas 
 	private Byte discountAdvanceSale;   // descuento en venta anticipada (0..100)
-
+   	
 	private Seat[] seats;
 		
-	public TravelArrayImpl(Date date, int nSeats){
-	   //TODO 
-	   // utiliza los precios por defecto: DEFAULT_PRICE y DEFAULT_DISCOUNT definidos en esta clase
-	   //debe crear el array de asientos
-	}
+	
+	
+   public TravelArrayImpl(Date date, int nSeats){
 
-	public TravelArrayImpl(Date date, int nSeats, Double price, Byte discount){
-	   //TODO 
-	   // Debe crear el array de asientos
-}
+	   this.travelDate = date;
+	   this.nSeats = nSeats;
+	   this.seats = new Seat[this.nSeats];
+	   this.price = DEFAULT_PRICE;
+	   this.discountAdvanceSale = DEFAULT_DISCOUNT;
 
+   }
+   
+   
+   public TravelArrayImpl(Date date, int nSeats, Double price, Byte discount){
+
+	   this.travelDate = date;
+	   this.nSeats = nSeats;
+	   this.price = price;
+	   this.discountAdvanceSale = discount;
+	   this.seats = new Seat[this.nSeats];
+	   
+   }
+
+   
 @Override
 public Byte getDiscountAdvanceSale() {
-	// TODO Auto-generated method stub
-	return 0;
+	return this.discountAdvanceSale;
 }
-
 
 @Override
 public int getNumberOfSoldSeats() {
-	// TODO Auto-generated method stub
-	return 0;
+	int contador = 0;
+	for(int i = 0; i < this.nSeats; i++) {
+		if(this.seats[i] != null) {
+			contador++;
+		}
+	}
+	return contador;
 }
 
 
 @Override
 public int getNumberOfNormalSaleSeats() {
-	// TODO Auto-generated method stub
-	return 0;
+	int contador = 0;
+	for(int i = 0; i < this.nSeats; i++) {
+		if(this.seats[i] != null && this.seats[i].getAdvanceSale() == false){
+			contador++;
+		}
+	}
+	return contador;
 }
 
 
 @Override
 public int getNumberOfAdvanceSaleSeats() {
-	// TODO Auto-generated method stub
-	return 0;
+	int contador = 0;
+	for(int i = 0; i < this.nSeats; i++) {
+		if(this.seats[i] != null && this.seats[i].getAdvanceSale() == true){
+			contador++;
+		}
+	}
+	return contador;
 }
 
 
 @Override
 public int getNumberOfSeats() {
-	// TODO Auto-generated method stub
-	return 0;
+	return nSeats;
 }
 
 
 @Override
 public int getNumberOfAvailableSeats() {
-	// TODO Auto-generated method stub
-	return 0;
+	int contador = 0;
+	for(int i = 0; i < this.nSeats; i++) {
+		if(seats[i] == null) {
+			contador++;
+		}
+	}
+	return contador;
 
 }
 
 @Override
 public Seat getSeat(int pos) {
-	// TODO Auto-generated method stub
-	return null;
+	return this.seats[pos - 1];
 }
 
 
 @Override
 public Person refundSeat(int pos) {
-	// TODO Auto-generated method stub
-	
-	return null;
+
+	Person refund = null;
+
+	if(pos > 0 && pos < this.nSeats) {
+
+		Seat seat = this.seats[pos - 1];
+		if(seat != null) {
+			Person person = seat.getHolder();
+			this.seats[pos - 1] = null;
+			refund = person;
+		} 
+	}
+	return refund;
 }
 
 
 
 private boolean isChildren(int age) {
-	// TODO Auto-generated method stub
-	return false;
+	boolean children = false;
+	if(age < CHILDREN_EXMAX_AGE ) {
+		children = true;
+	}
+	return children;
 }
 
 private boolean isAdult(int age) {
-	// TODO Auto-generated method stub
-	return false;
+	boolean adult = false;
+	if(age >= CHILDREN_EXMAX_AGE) {
+		adult = true;
+	}
+	return adult;
 }
 
 
 @Override
 public List<Integer> getAvailableSeatsList() {
-	// TODO Auto-generated method stub
 	List<Integer> lista=new ArrayList<Integer>(nSeats);
+
+	for(int i = 0; i < this.nSeats; i++) {
+		if(this.seats[i] == null) {
+			lista.add(i + 1);
+		}
+	}
+	
 	return lista;
 }
 
 
 @Override
 public List<Integer> getAdvanceSaleSeatsList() {
-	// TODO Auto-generated method stub
 	List<Integer> lista=new ArrayList<Integer>(nSeats);
+
+	for(int i = 0; i < this.nSeats;i++) {
+		if(this.seats[i].getAdvanceSale() == true) {
+			lista.add(i + 1);
+		}
+	}
+	
+	
 	return lista;
 }
 
 
 @Override
 public int getMaxNumberConsecutiveSeats() {
-	// TODO Auto-generated method stub
-	return 0;
+	int consecutiveSeats = 0;
+	int maxConsecutiveSeats = 0;
+	for(int i = 0; i < this.nSeats;i++) {
+		if(this.seats[i] !=  null) {
+			consecutiveSeats++;
+		}else{
+			consecutiveSeats = 0;
+		}
+
+		maxConsecutiveSeats = Math.max(maxConsecutiveSeats, consecutiveSeats);
+	}
+	return maxConsecutiveSeats;
 }
 
 
@@ -126,68 +194,138 @@ public int getMaxNumberConsecutiveSeats() {
 
 @Override
 public boolean isAdvanceSale(Person p) {
-	// TODO Auto-generated method stub
+	for(int i = 0; i < this.nSeats; i++) {
+		if(this.seats[i] != null && this.seats[i].getHolder().equals(p) && this.seats[i].getAdvanceSale()) {
+			return true;
+		}
+	}
 	return false;
 }
 
 
 @Override
 public Date getTravelDate() {
-	// TODO Auto-generated method stub
-	return null;
+	return this.travelDate;
 }
 
 
 @Override
 public boolean sellSeatPos(int pos, String nif, String name, int edad, boolean isAdvanceSale) {
-	// TODO Auto-generated method stub
-	return false;
+	boolean correctSeat = false;
+	if(pos > 0 && pos <= this.nSeats) {
+		Seat seat = this.seats[pos - 1];
+
+		if(seat == null) {
+			Person newPerson = new Person(nif, name, edad);
+			seat = new Seat(isAdvanceSale, newPerson);
+			this.seats[pos - 1] = seat;
+			correctSeat = true;
+		}
+	}
+	return correctSeat;
 }
 
 
 @Override
 public int getNumberOfChildren() {
-	// TODO Auto-generated method stub
-	
-	return 0;
+	int childrens = 0;
+	for(int i = 0; i < this.nSeats;i++){
+		if(this.seats[i] != null){
+			int age = this.seats[i].getHolder().getAge();
+			if(isChildren(age)){
+			 childrens++;
+			}
+		}
+	}
+	return childrens;
 }
 
 
 @Override
 public int getNumberOfAdults() {
-	// TODO Auto-generated method stub
-	
-	return 0;
+	int adults = 0;
+	for(int i = 0; i < this.nSeats;i++){
+		if(this.seats[i] != null){
+			int age = this.seats[i].getHolder().getAge();
+			if(isAdult(age)){
+			 adults++;
+			}
+		}
+	}
+	return adults;
 }
 
 
 
 @Override
 public Double getCollectionTravel() {
-	// TODO Auto-generated method stub
+	Double total = 0.0;
+	Double discount = this.getPrice()*(100 - this.discountAdvanceSale)/100;
+	for(int i = 0; i < this.nSeats; i++) {
+		if(this.seats[i] != null) {
+			if(this.seats[i].getAdvanceSale()) {
+				total = total + discount;
+			} else {
+				total = total + getPrice();
+			}
+		}
+	}
 	
-	return 0.0;
+	return total;
 }
 
 
 @Override
 public int getPosPerson(String nif) {
-	// TODO Auto-generated method stub
-	return 0;	
+	
+	int pos = -1;
+
+	for(int i = 0; i < this.nSeats; i++) {
+		if(this.seats[i] != null) {
+			if(this.seats[i].getHolder().getNif().equals(nif)) {
+				pos = i + 1;
+			}
+		}
+	}
+	return pos;	
 }
 
 
 @Override
 public int sellSeatFrontPos(String nif, String name, int edad, boolean isAdvanceSale) {
-	// TODO Auto-generated method stub
-	return 0;
+
+	int pos = -1;
+
+	for(int i = 0; i <  this.nSeats; i++) {
+		if(this.seats[i] == null) {
+			Person newPerson = new Person(nif, name, edad);
+			Seat newSeat = new Seat(isAdvanceSale, newPerson);
+			this.seats[i] = newSeat;
+			pos = i + 1;
+			break;
+
+		}
+	}
+	return pos;
 }
 
 
 @Override
 public int sellSeatRearPos(String nif, String name, int edad, boolean isAdvanceSale) {
-	// TODO Auto-generated method stub
-	return 0;
+	
+	int pos = -1;
+
+	for(int i = nSeats - 1; i > 0;i--) {
+		if(this.seats[i] == null) {
+			Person newPerson = new Person(nif, name, edad);
+			Seat newSeat = new Seat(isAdvanceSale, newPerson);
+			this.seats[i] = newSeat;
+			pos = i + 1;
+			break;
+		}
+	}
+
+	return pos;
 }
 
 
@@ -195,8 +333,16 @@ public int sellSeatRearPos(String nif, String name, int edad, boolean isAdvanceS
 
 @Override
 public Double getSeatPrice(Seat seat) {
-	// TODO Auto-generated method stub
-	return 0.0;
+	Double seatPrice = getPrice();
+	Double discount = this.getPrice()*(100 - this.discountAdvanceSale/100);
+
+	if(seat != null) {
+		if(seat.getAdvanceSale()) {
+			seatPrice = discount;
+		}
+	}
+
+	return seatPrice;
 }
 
 
