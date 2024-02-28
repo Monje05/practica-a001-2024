@@ -6,8 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-
-import ule.edi.model.*;
+import org.junit.*;
 
 
 public class TravelArrayImplTests {
