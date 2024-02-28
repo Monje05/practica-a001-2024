@@ -1,10 +1,10 @@
-package ule.edi.travel;
+
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ule.edi.model.*;
+
 
 public class TravelArrayImpl implements Travel {
 	
