@@ -1,4 +1,4 @@
-
+package ule.edi.travel;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -7,6 +7,8 @@ import java.util.Date;
 
 
 import org.junit.*;
+
+import ule.edi.model.*;
 
 
 public class TravelArrayImplTests {
@@ -158,7 +160,25 @@ public class TravelArrayImplTests {
 		Assert.assertEquals(true,ep.isAdvanceSale(new Person("10203040","Alic", 34)));
 		Assert.assertEquals(false,ep.isAdvanceSale(new Person("10202531", "Ana", 31)));
 		Assert.assertEquals(3,ep.getPosPerson("10203040A"));
-	}		
+	}
+	
+	@Test
+	public void testRefundUpdatePrice() throws Exception {
+		Person p = new Person("10203040","Alic", 34);
+		Assert.assertEquals(true,e.sellSeatPos(1, "10203040","Alic", 34,true));
+		Assert.assertEquals(true,e.sellSeatPos(2, "10203040A","Alice", 34,false));
+		Assert.assertTrue(e.getCollectionTravel()==175.0);
+		Assert.assertEquals(p,e.refundSeat(1));
+		Assert.assertEquals(0, e.getNumberOfAdvanceSaleSeats());
+    	Assert.assertEquals(1, e.getNumberOfNormalSaleSeats());
+    	Assert.assertEquals(1, e.getNumberOfSoldSeats());
+    	Assert.assertTrue(e.getCollectionTravel()==100.00);
+	}
+
+	@Test
+	public void testGetSeatNull() {
+		Assert.assertEquals(true,e.sellSeatPos(1, "10203040","Alic", 34,true));
+		Assert.assertEquals(null,e.getSeat(0));
+	}
+
 }
-
-

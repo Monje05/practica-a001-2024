@@ -1,10 +1,10 @@
-
+package ule.edi.travel;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
+import ule.edi.model.*;
 
 public class TravelArrayImpl implements Travel {
 	
@@ -104,7 +104,11 @@ public int getNumberOfAvailableSeats() {
 
 @Override
 public Seat getSeat(int pos) {
-	return this.seats[pos - 1];
+	Seat seat = null;
+	if(pos > 0 && pos < this.nSeats) {
+		seat = this.seats[pos - 1];
+	}
+	return seat;
 }
 
 
@@ -163,8 +167,10 @@ public List<Integer> getAdvanceSaleSeatsList() {
 	List<Integer> lista=new ArrayList<Integer>(nSeats);
 
 	for(int i = 0; i < this.nSeats;i++) {
-		if(this.seats[i].getAdvanceSale() == true) {
-			lista.add(i + 1);
+		if(this.seats[i] != null) {
+			if(this.seats[i].getAdvanceSale() == true) {
+				lista.add(i + 1);
+			}
 		}
 	}
 	
@@ -315,7 +321,7 @@ public int sellSeatRearPos(String nif, String name, int edad, boolean isAdvanceS
 	
 	int pos = -1;
 
-	for(int i = nSeats - 1; i > 0;i--) {
+	for(int i = nSeats - 1; i >= 0;i--) {
 		if(this.seats[i] == null) {
 			Person newPerson = new Person(nif, name, edad);
 			Seat newSeat = new Seat(isAdvanceSale, newPerson);
@@ -334,7 +340,7 @@ public int sellSeatRearPos(String nif, String name, int edad, boolean isAdvanceS
 @Override
 public Double getSeatPrice(Seat seat) {
 	Double seatPrice = getPrice();
-	Double discount = this.getPrice()*(100 - this.discountAdvanceSale/100);
+	Double discount = this.getPrice()*(100 - this.discountAdvanceSale)/100;
 
 	if(seat != null) {
 		if(seat.getAdvanceSale()) {

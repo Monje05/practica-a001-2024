@@ -1,4 +1,4 @@
-
+package ule.edi.model;
 
 public class Person {
 
