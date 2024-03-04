@@ -184,13 +184,14 @@ public int getMaxNumberConsecutiveSeats() {
 	int consecutiveSeats = 0;
 	int maxConsecutiveSeats = 0;
 	for(int i = 0; i < this.nSeats;i++) {
-		if(this.seats[i] !=  null) {
+		if(this.seats[i] ==  null) {
 			consecutiveSeats++;
+			maxConsecutiveSeats = Math.max(maxConsecutiveSeats, consecutiveSeats);
 		}else{
 			consecutiveSeats = 0;
 		}
 
-		maxConsecutiveSeats = Math.max(maxConsecutiveSeats, consecutiveSeats);
+		
 	}
 	return maxConsecutiveSeats;
 }
@@ -218,15 +219,17 @@ public Date getTravelDate() {
 @Override
 public boolean sellSeatPos(int pos, String nif, String name, int edad, boolean isAdvanceSale) {
 	boolean correctSeat = false;
-	if(pos > 0 && pos <= this.nSeats) {
-		Seat seat = this.seats[pos - 1];
-
-		if(seat == null) {
-			Person newPerson = new Person(nif, name, edad);
-			seat = new Seat(isAdvanceSale, newPerson);
-			this.seats[pos - 1] = seat;
-			correctSeat = true;
+	boolean repetido = false;
+	Person newPerson = new Person(nif, name, edad);
+	for(int i = 0; i < this.nSeats; i++) {
+		if(this.seats[i] != null && this.seats[i].getHolder().equals(newPerson)) {
+			repetido = true;
+			break;
 		}
+	}
+	if(pos > 0 && pos <= this.nSeats && this.seats[pos - 1] == null && !repetido) {
+		this.seats[pos - 1] = new Seat(isAdvanceSale, newPerson);
+		correctSeat = true;
 	}
 	return correctSeat;
 }
