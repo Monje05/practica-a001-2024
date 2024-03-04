@@ -176,9 +176,16 @@ public class TravelArrayImplTests {
 	}
 
 	@Test
-	public void testGetSeatNull() {
+	public void testGetSeatNull() throws Exception{
 		Assert.assertEquals(true,e.sellSeatPos(1, "10203040","Alic", 34,true));
 		Assert.assertEquals(null,e.getSeat(0));
 	}
+
+	@Test
+	public void testRefundInvalid() throws Exception {
+		Assert.assertEquals(true,e.sellSeatPos(1, "10203040","Alic", 34,true));
+		Assert.assertEquals(null, e.refundSeat(0));
+	}
+
 
 }

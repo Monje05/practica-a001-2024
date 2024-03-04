@@ -130,7 +130,6 @@ public Person refundSeat(int pos) {
 }
 
 
-
 private boolean isChildren(int age) {
 	boolean children = false;
 	if(age < CHILDREN_EXMAX_AGE ) {
