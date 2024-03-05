@@ -187,5 +187,38 @@ public class TravelArrayImplTests {
 		Assert.assertEquals(null, e.refundSeat(0));
 	}
 
+	@Test 
+	public void testNumberOfSoldSeats() throws Exception {
+		Assert.assertEquals(true,e.sellSeatPos(1, "10203040","Alic", 34,true));
+		Assert.assertEquals(true,e.sellSeatPos(2, "10203040A","Alice", 34,false));
+		Assert.assertEquals(2,e.getNumberOfSoldSeats());
+	}
+
+	@Test
+	public void testNumberOfNormalSaleSeats() throws Exception {
+		Assert.assertEquals(true,e.sellSeatPos(1, "10203040","Alic", 34,true));
+		Assert.assertEquals(true,e.sellSeatPos(2, "10203040A","Alice", 34,false));
+		Assert.assertEquals(1,e.getNumberOfNormalSaleSeats());
+	}
+
+	@Test
+	public void testNumberOfAdvanceSaleSeats() throws Exception {
+		Assert.assertEquals(true,e.sellSeatPos(1, "10203040","Alic", 34,true));
+		Assert.assertEquals(true,e.sellSeatPos(2, "10203040A","Alice", 34,false));
+		Assert.assertEquals(1,e.getNumberOfAdvanceSaleSeats());
+	}
+
+	@Test 
+	public void testGetNumberOfSeats() throws Exception {
+		Assert.assertEquals(110,e.getNumberOfSeats());
+	}
+
+	@Test
+	public void testNumberOfAvailableSeats() throws Exception {
+		Assert.assertEquals(true,e.sellSeatPos(1, "10203040","Alic", 34,true));
+		Assert.assertEquals(true,e.sellSeatPos(2, "10203040A","Alice", 34,false));
+		Assert.assertEquals(108,e.getNumberOfAvailableSeats());
+	}
+
 
 }
