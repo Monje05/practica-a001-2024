@@ -244,5 +244,46 @@ public class TravelArrayImplTests {
 		Assert.assertEquals(1,e.getNumberOfAdults());
 	}
 
+	@Test 
+	public void testGetPosPerson() throws Exception {
+		Assert.assertEquals(true,e.sellSeatPos(16, "10203040","Alic", 18,true));
+		Assert.assertEquals(16,e.getPosPerson("10203040"));
+	}
+
+	@Test
+	public void testGetPosPersonInvalid() throws Exception {
+		Assert.assertEquals(true,e.sellSeatPos(16, "10203040","Alic", 18,true));
+		Assert.assertEquals(-1,e.getPosPerson("10203040A"));
+	}
+
+	@Test
+	public void testSellSeatRearPos() throws Exception {
+		Assert.assertEquals(true,ep.sellSeatPos(4, "10203040","Alic", 18,true));
+		Assert.assertEquals(3,ep.sellSeatRearPos("10203040A","Alice", 15,false));
+	}
+
+	@Test
+	public void testSellSeatRearPosFull() throws Exception {
+		Assert.assertEquals(true,ep.sellSeatPos(4, "10203040","Alic", 18,true));
+		Assert.assertEquals(true,ep.sellSeatPos(3, "10203040A","Alic", 18,true));
+		Assert.assertEquals(true,ep.sellSeatPos(2, "10203040B","Alic", 18,true));
+		Assert.assertEquals(true,ep.sellSeatPos(1, "10203040C","Alic", 18,true));
+		Assert.assertEquals(-1,ep.sellSeatRearPos("10203040A","Alice", 15,false));
+	}
+
+	@Test
+	public void testSellSeatFrontPos() throws Exception {
+		Assert.assertEquals(true,ep.sellSeatPos(1, "10203040","Alic", 18,true));
+		Assert.assertEquals(2,ep.sellSeatFrontPos("10203040A","Alice", 15,false));
+	}
+
+	@Test
+	public void testSellSeatFrontPosFull() throws Exception {
+		Assert.assertEquals(true,ep.sellSeatPos(4, "10203040","Alic", 18,true));
+		Assert.assertEquals(true,ep.sellSeatPos(3, "10203040A","Alic", 18,true));
+		Assert.assertEquals(true,ep.sellSeatPos(2, "10203040B","Alic", 18,true));
+		Assert.assertEquals(true,ep.sellSeatPos(1, "10203040C","Alic", 18,true));
+		Assert.assertEquals(-1,ep.sellSeatFrontPos("10203040A","Alice", 15,false));
+	}
 	
 }
