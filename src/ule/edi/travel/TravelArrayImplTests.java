@@ -285,5 +285,13 @@ public class TravelArrayImplTests {
 		Assert.assertEquals(true,ep.sellSeatPos(1, "10203040C","Alic", 18,true));
 		Assert.assertEquals(-1,ep.sellSeatFrontPos("10203040A","Alice", 15,false));
 	}
-	
+
+	@Test
+	public void testSeatPrice() throws Exception {
+		Assert.assertEquals(true,ep.sellSeatPos(4, "10203040","Alic", 18,true));
+		Assert.assertEquals(true,ep.sellSeatPos(3, "10203040A","Alic", 18,false));
+		Assert.assertEquals(75.0,0.0, ep.getSeatPrice(ep.getSeat(4)));
+		Assert.assertEquals(100.0,0.0, ep.getSeatPrice(ep.getSeat(3)));
+	}
+
 }
