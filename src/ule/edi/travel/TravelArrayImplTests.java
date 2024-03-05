@@ -220,5 +220,29 @@ public class TravelArrayImplTests {
 		Assert.assertEquals(108,e.getNumberOfAvailableSeats());
 	}
 
+	@Test
+	public void testIsAdvanceSale() throws Exception {
+		Person p = new Person("10203040","Alic", 34);
+		Person p2 = new Person("10203040A","Alice", 34);
+		Assert.assertEquals(true,e.sellSeatPos(1, "10203040","Alic", 34,true));
+		Assert.assertEquals(true,e.sellSeatPos(2, "10203040A","Alice", 34,false));
+		Assert.assertEquals(true,e.isAdvanceSale(p));
+		Assert.assertEquals(false,e.isAdvanceSale(p2));
+	}
 
+	@Test
+	public void testGetNumberOfChildren() throws Exception {
+		Assert.assertEquals(true,e.sellSeatPos(1, "10203040","Alic", 18,true));
+		Assert.assertEquals(true,e.sellSeatPos(2, "10203040A","Alice", 15,false));
+		Assert.assertEquals(1,e.getNumberOfChildren());
+	}
+
+	@Test
+	public void testGetNumberOfAdults() throws Exception {
+		Assert.assertEquals(true,e.sellSeatPos(1, "10203040","Alic", 18,true));
+		Assert.assertEquals(true,e.sellSeatPos(2, "10203040A","Alice", 15,false));
+		Assert.assertEquals(1,e.getNumberOfAdults());
+	}
+
+	
 }
