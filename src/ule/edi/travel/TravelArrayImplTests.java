@@ -294,4 +294,35 @@ public class TravelArrayImplTests {
 		Assert.assertEquals(100.0,0.0, ep.getSeatPrice(ep.getSeat(3)));
 	}
 
+	@Test
+	public void testGetConsecutiveSeats() throws Exception {
+		Assert.assertEquals(true,ep.sellSeatPos(1, "10203040","Alic", 18,true));
+		Assert.assertEquals(true,ep.sellSeatPos(2, "10203040A","Alic", 18,false));
+		Assert.assertEquals(2, ep.getMaxNumberConsecutiveSeats());
+	}
+
+	@Test
+	public void testGetListAvailableSeats() throws Exception{		
+		Assert.assertEquals(true, ep.sellSeatPos(1, "10203040A","Alice", 34,true)); 
+		Assert.assertEquals(true, ep.sellSeatPos(2, "10203040B","Alice", 34,true)); 
+		Assert.assertEquals(true, ep.sellSeatPos(4, "10203040D","Alice", 34,false)); 
+		Assert.assertEquals("[3]", ep.getAvailableSeatsList().toString());
+	}
+	
+	@Test
+	public void testEqualsPersonTrue() throws Exception {
+		Person p = new Person("10203040","Alic", 34);
+		Person p2 = new Person("10203040","Alic", 34);
+		Assert.assertEquals(true, p.equals(p));
+		
+	}
+	
+	@Test
+	public void testEqualsPersonFalse() throws Exception {
+		Person p = new Person("10203040","Alic", 34);
+		Person p2 = new Person("10203040A","Alic", 34);
+		Assert.assertEquals(false, p2.equals(p));
+		
+	}
+
 }

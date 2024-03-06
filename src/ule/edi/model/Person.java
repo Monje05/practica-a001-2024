@@ -45,17 +45,16 @@ public class Person {
 	
     @Override
 	public boolean equals(Object obj) {
-	
+    	boolean equals = false;
 		if(this == obj) {
-			return true;
+			equals = true;
 		}
 
 		if(obj instanceof Person) {
 			Person other = (Person)obj;
-			return(this.nif.equals(other.nif));
+			equals = (this.nif.equals(other.nif));
 		}
-
-		return false;
+		return equals;
 	
 	}
 	
